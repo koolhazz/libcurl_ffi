@@ -14,7 +14,11 @@ local function print_html(ptr, sz, nu, userdata)
 end
 
 local function to_json()
-	return string.format("{\"id\":\"99\", \"sitemid\":\"100\"}")
+	return "{\"id\":\"99\", \"sitemid\":\"100\"}"
+end
+
+local function error_handle(_c, errno)
+	print("EMSG: "..errno..ffi.string(_curl:strerror()))
 end
 
 
@@ -53,8 +57,7 @@ local function post_test()
 		if _res == 0 then
 			print(table.concat(str, nil))
 		else
-			print(res)
-			print("post failed: "..ffi.string(_curl:strerror()))
+			error_handle(_curl, _res)
 		end
 
 		_curl:cleanup()
